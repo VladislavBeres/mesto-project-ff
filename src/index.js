@@ -11,7 +11,6 @@
 const content = document.querySelector(".content");
 const placesList = content.querySelector(".places__list");
 const addButton = content.querySelector(".profile__add-button");
-// const delButton = document.querySelector(".card__delete-button");
 
 const buttonEdit = content.querySelectorAll(".profile__edit-button");
 

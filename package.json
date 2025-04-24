@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rd /s /q dist && webpack"
+    "build": "rd /s /q dist && webpack --mode production",
+    "dev": "webpack serve --open"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/VladislavBeres/mesto-project-ff#readme",
   "devDependencies": {
     "webpack": "^5.99.6",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
   }
 }
