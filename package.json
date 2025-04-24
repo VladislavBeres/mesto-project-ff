@@ -1,0 +1,23 @@
+{
+  "name": "mesto-project",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladislavBeres/mesto-project-ff.git"
+  },
+  "author": "Vladislav Berestyuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladislavBeres/mesto-project-ff/issues"
+  },
+  "homepage": "https://github.com/VladislavBeres/mesto-project-ff#readme",
+  "devDependencies": {
+    "webpack": "^5.99.6",
+    "webpack-cli": "^6.0.1"
+  }
+}
