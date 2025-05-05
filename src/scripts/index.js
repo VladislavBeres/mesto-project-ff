@@ -17,7 +17,7 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 const popupClose = document.querySelectorAll('.popup__close');
 
 //  пременная всех попапов
-const popup = document.querySelectorAll('.popup');
+const popups = document.querySelectorAll('.popup');
 
 const cardTemplate = document.querySelector("#card-template").content;
 
@@ -25,7 +25,7 @@ const cardTemplate = document.querySelector("#card-template").content;
 const callbacks = {
   onDelete,
   likeCard,
-  MagnificationImage,
+  magnifiedImage,
 };
 
 //  функция добавления карточек на страницу
@@ -40,11 +40,11 @@ initialCards.forEach (function (item) {
 
 // переменные с попапами
 const popupImage = document.querySelector('.popup_type_image');
-const popupEdit = document.querySelector('.popup_type_edit');
+const popupProfile = document.querySelector('.popup_type_edit');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 
 // функция открытие карточки в большом окне
-function MagnificationImage(src, textContent) {
+function magnifiedImage(src, textContent) {
   const popupSrc = popupImage.querySelector(".popup__image");
   const popupText = popupImage.querySelector(".popup__caption");
   popupSrc.src = src;
@@ -53,8 +53,8 @@ function MagnificationImage(src, textContent) {
 }
 
 buttonEdit.addEventListener('click',() => {
-  openPopup(popupEdit);
-  ProfileForm();
+  openPopup(popupProfile);
+  fillProfileForm();
 });
 
 addButton.addEventListener('click', () => {
@@ -69,7 +69,7 @@ popupClose.forEach((button) => {
   });
 });
 
-popup.forEach((popup) => {
+popups.forEach((popup) => {
   popup.addEventListener("click", (event) => {
     closePopupOverlay(event);
     
@@ -82,27 +82,26 @@ popup.forEach((popup) => {
 const profilTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
-// Находим форму в DOM
-const formElement = document.querySelector('.popup__form');
 // Находим поля формы в DOM
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
+const nameInput = popupProfile.querySelector('.popup__input_type_name');
+const jobInput = popupProfile.querySelector('.popup__input_type_description');
 
 //  поля «Имя» и «О себе» заполнены теми значениями, которые отображаются на странице
-function ProfileForm() {
+function fillProfileForm() {
   nameInput.value = profilTitle.textContent;
   jobInput.value = profileDescription.textContent;
 }
 
 
 // Обработчик отправки формы
-function handleFormSubmit(evt) {
+function handleFormSubmitProfile(evt) {
     evt.preventDefault();
     profilTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
+    closePopup(popupProfile);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+popupProfile.addEventListener('submit', handleFormSubmitProfile);
 
 
 // -----------------------------добавление карточки--------------------

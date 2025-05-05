@@ -26,7 +26,7 @@ export function createCard(data, callbacks, cardTemplate) {
 
   // слушатель открытия карточки
   cardImage.addEventListener("click", () => {
-    callbacks.MagnificationImage(cardImage.src, cardTitle.textContent);
+    callbacks.magnifiedImage(cardImage.src, cardTitle.textContent);
   });
 
   return cardElement;
