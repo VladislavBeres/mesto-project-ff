@@ -1,42 +1,50 @@
-export function createCard(data, callbacks, cardTemplate) {
+export function createCard(data, callbacks, cardTemplate, currentUserId) {
   const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
-    
+
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
+  const delButton = cardElement.querySelector(".card__delete-button");
+  const likeButton = cardElement.querySelector(".card__like-button");
+  const likeCount = cardElement.querySelector(".card__like-count");
 
+  cardElement.dataset.id = data._id;
   cardImage.src = data.link;
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
-  
-  // переменная кнопки удаления
-  const delButton = cardElement.querySelector('.card__delete-button');
 
-  // слушатель кнопки удаления
-  delButton.addEventListener("click", () => {
-    callbacks.onDelete(cardElement)
-  });
+  // Устанавливаем счётчик лайков
+  likeCount.textContent = data.likes.length;
 
-  // переменная кнопки лайка
-  const likeButton = cardElement.querySelector(".card__like-button");
+  // Проверяем, лайкнул ли текущий пользователь
+  const isLiked = data.likes.some((like) => like._id === currentUserId);
+  if (isLiked) {
+    likeButton.classList.add("card__like-button_is-active");
+  }
 
-  // слушатель кнопки лайка
+  // Добавляем слушатель удаления, если карточка принадлежит пользователю
+  if (data.owner._id === currentUserId) {
+    delButton.addEventListener("click", () => {
+      callbacks.deleteCardFromServer(data._id)
+        .then(() => callbacks.onDelete(cardElement))
+    });
+  } else {
+    delButton.remove();
+  }
+    
+  // Обработка лайка
   likeButton.addEventListener("click", () => {
-    callbacks.likeCard(likeButton);
-  });
+    callbacks.handleLikeClick(data._id, likeButton, likeCount, currentUserId);
+});
 
-  // слушатель открытия карточки
+  // Открытие увеличенного изображения
   cardImage.addEventListener("click", () => {
-    callbacks.magnifiedImage(cardImage.src, cardTitle.textContent);
+    callbacks.magnifiedImage(data.link, data.name);
   });
 
   return cardElement;
 }
 
-// функция добавления и удаления лайка
-export function likeCard(likeButton) {
-  likeButton.classList.toggle("card__like-button_is-active");
+export function onDelete(cardElement) {
+  cardElement.remove();
 }
 
-export function onDelete(delCard) {
-  delCard.remove();
-};
