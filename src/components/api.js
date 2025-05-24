@@ -11,10 +11,7 @@ const checkResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-// здесь храниться наш ID
-let currentUserId = "";
-
-
+// получение данных профиля с сервера
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
@@ -51,14 +48,14 @@ export const getNewName = (newName, newAbout) => {
 };
 
 // Добавление новой карточки
-export const getNewCard = (newCardName, newCardLink) => {
+export const getNewCard = (cardData) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: config.headers,
 
     body: JSON.stringify({
-      name: newCardName,
-      link: newCardLink,
+      name: cardData.name,
+      link: cardData.link,
     }),
   })
     .then(checkResponse)
@@ -67,6 +64,7 @@ export const getNewCard = (newCardName, newCardLink) => {
     });
 };
 
+// Удаление своей карточки
 export const deleteCardFromServer =(cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
@@ -78,6 +76,7 @@ export const deleteCardFromServer =(cardId) => {
     });
 }
 
+// Установка или снятие лайка
 export const likeOrRemoveLike = (cardId, method) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: method,
@@ -85,7 +84,7 @@ export const likeOrRemoveLike = (cardId, method) => {
   }).then(checkResponse)
 }
 
-
+// Замена картинки профиля
 export const updateAvatar = (avatarUrl) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",

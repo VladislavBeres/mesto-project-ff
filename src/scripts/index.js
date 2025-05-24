@@ -143,7 +143,7 @@ function handleFormSubmitCard(evt) {
     owner: { _id: currentUserId },
   };
 
-  getNewCard(popupCardName.value, popupUrl.value)
+  getNewCard(newCard)
     .then(cardData => {
       addCard(cardData, "prepend"); // теперь передаётся настоящая карточка от сервера
       closePopup(popupNewCard);
@@ -184,14 +184,6 @@ enableValidation(validationConfig);
 
 // ---------------------Интеграция с API-------------------------
 
-const config = {
-  baseUrl: "https://nomoreparties.co/v1/wff-cohort-39",
-  headers: {
-    authorization: "84f7634e-c844-43b2-886b-d0ecf25273a3",
-    "Content-Type": "application/json",
-  },
-};
-
 // здесь храниться наш ID
 let currentUserId = "";
 
@@ -214,7 +206,7 @@ Promise.all([getUserInfo(), getInitialCards()])
     console.error("Ошибка при загрузке данных:", err);
   });
 
-
+// обрабатывает клики на лайк
 function handleLikeClick(cardId, likeButton, likeCount, currentUserId) {
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
   const method = isLiked ? "DELETE" : "PUT";

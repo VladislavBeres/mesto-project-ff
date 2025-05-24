@@ -17,7 +17,7 @@ const hideInputError = (formElement, inputElement, settings) => {
 // Проверяет валидность поля ввода
 const checkInputValidity = (formElement, inputElement, settings) => {
   if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
     inputElement.setCustomValidity("");
   }
@@ -34,7 +34,16 @@ export function clearValidation(formElement, settings) {
   const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
   const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
-  toggleButtonState(inputList, buttonElement, settings);
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement, settings); // Скрыть ошибки
+  });
+
+  toggleButtonState(inputList, buttonElement, settings); // Обновить состояние кнопки
+}
+
+const setEventListeners = (formElement, settings) => {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
@@ -45,7 +54,7 @@ export function clearValidation(formElement, settings) {
 };
 
 // Основная функция включения валидации
-export function enableValidation (settings) {
+export function enableValidation(settings) {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
 
   formList.forEach((formElement) => {
@@ -53,9 +62,9 @@ export function enableValidation (settings) {
       evt.preventDefault();
     });
 
-    clearValidation(formElement, settings);
+    setEventListeners(formElement, settings); // Назначаем слушатели один раз
   });
-};
+}
 
 
 
@@ -69,7 +78,9 @@ const hasInvalidInput = (inputList) => {
 const toggleButtonState = (inputList, buttonElement, settings) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(settings.inactiveButtonClass);
+    buttonElement.disabled = true;
   } else {
     buttonElement.classList.remove(settings.inactiveButtonClass);
+    buttonElement.disabled = false;
   }
 };
